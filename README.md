@@ -82,9 +82,8 @@ iris_flower_classifier/
 
 Clone the repo:
 
-git clone https://github.com/your-username/iris-flower-classifier.git
-cd iris-flower-classifier
-
+git clone https://github.com/Souparno467/iris.git
+cd iris
 
 Install dependencies:
 
