@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iris Flower Classifier 🌸 - Plants vs Zombies Style</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+    <!-- Floating particles for magical Plants vs Zombies effect -->
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <!-- Plants vs Zombies decorative elements -->
+    <div class="pvz-decoration"></div>
+    <div class="pvz-decoration"></div>
+    <div class="pvz-decoration"></div>
+    <div class="pvz-decoration"></div>
+
+    <!-- Popup toggle buttons -->
+    <button class="popup-toggle" onclick="togglePopup('dataPopup')" title="Sample Data Ranges">
+        📊
+    </button>
+    <button class="popup-toggle" onclick="togglePopup('themePopup')" title="Plants vs Zombies Theme">
+        🎮
+    </button>
+
+    <!-- Sample Data Ranges Popup -->
+    <div class="right-popup" id="dataPopup">
+        <h3>📊 Sample Data Ranges</h3>
+        <div class="popup-content">
+            <div class="data-grid">
+                <div class="data-item">
+                    <strong style="color: #4CAF50;">🌸 Sepal Length</strong><br>
+                    <small>4.3 - 7.9 cm</small>
+                </div>
+                <div class="data-item">
+                    <strong style="color: #8BC34A;">🌿 Sepal Width</strong><br>
+                    <small>2.0 - 4.4 cm</small>
+                </div>
+                <div class="data-item">
+                    <strong style="color: #CDDC39;">🌺 Petal Length</strong><br>
+                    <small>1.0 - 6.9 cm</small>
+                </div>
+                <div class="data-item">
+                    <strong style="color: #FFEB3B;">🌼 Petal Width</strong><br>
+                    <small>0.1 - 2.5 cm</small>
+                </div>
+            </div>
+            <p style="margin-top: 15px; font-size: 0.9rem; color: #666; text-align: center;">
+                Use these ranges as a guide for input values
+            </p>
+        </div>
+    </div>
+
+    <!-- Plants vs Zombies Theme Popup -->
+    <div class="right-popup" id="themePopup">
+        <h3>🎮 Plants vs Zombies Theme</h3>
+        <div class="popup-content">
+            <p style="margin-bottom: 15px; font-size: 0.95rem;">
+                Welcome to the magical garden where flowers and machine learning meet! 
+                Just like in Plants vs Zombies, each flower has its unique characteristics.
+            </p>
+            <div class="theme-tags">
+                <span class="theme-tag">🌱 Garden Defense</span>
+                <span class="theme-tag">🔮 AI Magic</span>
+                <span class="theme-tag">🌸 Flower Power</span>
+            </div>
+            <div style="margin-top: 20px; padding: 15px; background: rgba(76, 175, 80, 0.1); border-radius: 12px; border-left: 4px solid #4CAF50;">
+                <strong style="color: #4CAF50; font-size: 0.9rem;">Flower Comparisons:</strong><br>
+                <small style="color: #666; font-size: 0.8rem;">
+                    Setosa = Sunflower (reliable)<br>
+                    Versicolor = Peashooter (versatile)<br>
+                    Virginica = Cherry Bomb (complex)
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Iris Flower Classifier</h1>
+        
+        <form action="/predict" method="post" id="irisForm">
+            <div class="form-group">
+                <label for="sepal_length">🌸 Sepal Length (cm)</label>
+                <input type="text" 
+                       name="sepal_length" 
+                       id="sepal_length" 
+                       placeholder="Enter sepal length (e.g., 5.1)"
+                       required
+                       pattern="[0-9]+\.?[0-9]*"
+                       title="Please enter a valid number">
+            </div>
+
+            <div class="form-group">
+                <label for="sepal_width">🌿 Sepal Width (cm)</label>
+                <input type="text" 
+                       name="sepal_width" 
+                       id="sepal_width" 
+                       placeholder="Enter sepal width (e.g., 3.5)"
+                       required
+                       pattern="[0-9]+\.?[0-9]*"
+                       title="Please enter a valid number">
+            </div>
+
+            <div class="form-group">
+                <label for="petal_length">🌺 Petal Length (cm)</label>
+                <input type="text" 
+                       name="petal_length" 
+                       id="petal_length" 
+                       placeholder="Enter petal length (e.g., 1.4)"
+                       required
+                       pattern="[0-9]+\.?[0-9]*"
+                       title="Please enter a valid number">
+            </div>
+
+            <div class="form-group">
+                <label for="petal_width">🌼 Petal Width (cm)</label>
+                <input type="text" 
+                       name="petal_width" 
+                       id="petal_width" 
+                       placeholder="Enter petal width (e.g., 0.2)"
+                       required
+                       pattern="[0-9]+\.?[0-9]*"
+                       title="Please enter a valid number">
+            </div>
+
+            <button type="submit" id="predictBtn">
+                <span id="btnText">🔮 Predict Flower Type</span>
+                <div class="loading" id="loading" style="display: none;"></div>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Popup toggle functionality
+        function togglePopup(popupId) {
+            const popup = document.getElementById(popupId);
+            popup.classList.toggle('active');
+            
+            // Close other popups when opening a new one
+            const allPopups = document.querySelectorAll('.right-popup');
+            allPopups.forEach(p => {
+                if (p.id !== popupId) {
+                    p.classList.remove('active');
+                }
+            });
+        }
+
+        // Close popups when clicking outside
+        document.addEventListener('click', function(event) {
+            const popups = document.querySelectorAll('.right-popup');
+            const toggleButtons = document.querySelectorAll('.popup-toggle');
+            
+            if (!event.target.closest('.right-popup') && 
+                !event.target.closest('.popup-toggle')) {
+                popups.forEach(popup => {
+                    popup.classList.remove('active');
+                });
+            }
+        });
+
+        // Enhanced form submission with Plants vs Zombies theme
+        document.getElementById('irisForm').addEventListener('submit', function(e) {
+            const btn = document.getElementById('predictBtn');
+            const btnText = document.getElementById('btnText');
+            const loading = document.getElementById('loading');
+            
+            // Show loading state with Plants vs Zombies animation
+            btnText.style.display = 'none';
+            loading.style.display = 'inline-block';
+            btn.disabled = true;
+            btn.style.opacity = '0.8';
+            btn.style.background = 'linear-gradient(45deg, #4CAF50, #8BC34A)';
+            
+            // Add success animation after a short delay
+            setTimeout(() => {
+                btn.classList.add('success-animation');
+            }, 100);
+        });
+
+        // Enhanced input validation with Plants vs Zombies colors
+        const inputs = document.querySelectorAll('input[type="text"]');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-3px) scale(1.03)';
+                this.style.border = '3px solid #4CAF50';
+                this.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.4)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0) scale(1)';
+            });
+            
+            input.addEventListener('input', function() {
+                // Real-time validation with Plants vs Zombies color scheme
+                const value = parseFloat(this.value);
+                const min = this.id.includes('sepal') ? 2 : 0.1;
+                const max = this.id.includes('sepal') ? 8 : 7;
+                
+                if (value < min || value > max) {
+                    this.style.borderColor = '#FF5722';
+                    this.style.boxShadow = '0 0 15px rgba(255, 87, 34, 0.4)';
+                    this.style.background = 'linear-gradient(white, #ffebee) padding-box, linear-gradient(45deg, #FF5722, #E91E63) border-box';
+                } else {
+                    this.style.borderColor = '#4CAF50';
+                    this.style.boxShadow = '0 0 15px rgba(76, 175, 80, 0.4)';
+                    this.style.background = 'linear-gradient(white, #e8f5e8) padding-box, linear-gradient(45deg, #4CAF50, #8BC34A) border-box';
+                }
+            });
+        });
+
+        // Enhanced container hover effects
+        const container = document.querySelector('.container');
+        container.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px) scale(1.03)';
+            this.style.boxShadow = '0 35px 70px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(76, 175, 80, 0.5)';
+        });
+        
+        container.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+            this.style.boxShadow = '0 30px 60px rgba(0, 0, 0, 0.3), 0 0 0 2px rgba(76, 175, 80, 0.3)';
+        });
+
+        // Add Plants vs Zombies sound effects simulation
+        function playPvzSound() {
+            // Simulate sound effect with visual feedback
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach((particle, index) => {
+                setTimeout(() => {
+                    particle.style.transform = 'scale(1.5)';
+                    particle.style.opacity = '1';
+                    setTimeout(() => {
+                        particle.style.transform = 'scale(1)';
+                        particle.style.opacity = '0.7';
+                    }, 200);
+                }, index * 100);
+            });
+        }
+
+        // Add click sound effect to button
+        document.getElementById('predictBtn').addEventListener('click', playPvzSound);
+
+        // Add hover effects to popup toggle buttons
+        const toggleButtons = document.querySelectorAll('.popup-toggle');
+        toggleButtons.forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-50%) scale(1.15)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-50%) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result - Iris Flower Classifier 🌸 - Plants vs Zombies Style</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+    <!-- Floating particles for magical Plants vs Zombies effect -->
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <!-- Plants vs Zombies decorative elements -->
+    <div class="pvz-decoration"></div>
+    <div class="pvz-decoration"></div>
+    <div class="pvz-decoration"></div>
+    <div class="pvz-decoration"></div>
+
+    <!-- Popup toggle buttons -->
+    <button class="popup-toggle" onclick="togglePopup('dataPopup')" title="Sample Data Ranges">
+        📊
+    </button>
+    <button class="popup-toggle" onclick="togglePopup('themePopup')" title="Plants vs Zombies Theme">
+        🎮
+    </button>
+
+    <!-- Sample Data Ranges Popup -->
+    <div class="right-popup" id="dataPopup">
+        <h3>📊 Sample Data Ranges</h3>
+        <div class="popup-content">
+            <div class="data-grid">
+                <div class="data-item">
+                    <strong style="color: #4CAF50;">🌸 Sepal Length</strong><br>
+                    <small>4.3 - 7.9 cm</small>
+                </div>
+                <div class="data-item">
+                    <strong style="color: #8BC34A;">🌿 Sepal Width</strong><br>
+                    <small>2.0 - 4.4 cm</small>
+                </div>
+                <div class="data-item">
+                    <strong style="color: #CDDC39;">🌺 Petal Length</strong><br>
+                    <small>1.0 - 6.9 cm</small>
+                </div>
+                <div class="data-item">
+                    <strong style="color: #FFEB3B;">🌼 Petal Width</strong><br>
+                    <small>0.1 - 2.5 cm</small>
+                </div>
+            </div>
+            <p style="margin-top: 15px; font-size: 0.9rem; color: #666; text-align: center;">
+                Use these ranges as a guide for input values
+            </p>
+        </div>
+    </div>
+
+    <!-- Plants vs Zombies Theme Popup -->
+    <div class="right-popup" id="themePopup">
+        <h3>🎮 Plants vs Zombies Theme</h3>
+        <div class="popup-content">
+            <p style="margin-bottom: 15px; font-size: 0.95rem;">
+                Welcome to the magical garden where flowers and machine learning meet! 
+                Just like in Plants vs Zombies, each flower has its unique characteristics.
+            </p>
+            <div class="theme-tags">
+                <span class="theme-tag">🌱 Garden Defense</span>
+                <span class="theme-tag">🔮 AI Magic</span>
+                <span class="theme-tag">🌸 Flower Power</span>
+            </div>
+            <div style="margin-top: 20px; padding: 15px; background: rgba(76, 175, 80, 0.1); border-radius: 12px; border-left: 4px solid #4CAF50;">
+                <strong style="color: #4CAF50; font-size: 0.9rem;">Flower Comparisons:</strong><br>
+                <small style="color: #666; font-size: 0.8rem;">
+                    Setosa = Sunflower (reliable)<br>
+                    Versicolor = Peashooter (versatile)<br>
+                    Virginica = Cherry Bomb (complex)
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <div class="result-container">
+        <h2>🔮 Prediction Complete!</h2>
+        
+        <div class="prediction-result" id="predictionResult">
+            {{ flower }}
+        </div>
+        
+
+        
+        <div style="margin: 30px 0; padding: 25px; background: linear-gradient(135deg, rgba(255, 165, 0, 0.8), rgba(255, 193, 7, 0.8)); border-radius: 20px; backdrop-filter: blur(10px);">
+            <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 1.3rem;">🌸 About This Flower</h3>
+            <div id="flowerInfo" style="text-align: left; color: #555; line-height: 1.6;">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </div>
+
+        <div style="margin: 30px 0; padding: 25px; background: linear-gradient(135deg, rgba(255, 165, 0, 0.8), rgba(255, 193, 7, 0.8)); border-radius: 20px; backdrop-filter: blur(10px);">
+            <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 1.3rem;">📊 Classification Details</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: left;">
+                <div style="padding: 15px; background: linear-gradient(135deg, rgba(255, 165, 0, 0.7), rgba(255, 193, 7, 0.7)); border-radius: 15px; border-left: 4px solid #4CAF50; transition: all 0.3s ease;">
+                    <strong style="color: #4CAF50; font-size: 1.1rem;">Setosa</strong><br>
+                    <small style="color: #666;">🌱 Distinctive, easy to identify</small>
+                </div>
+                <div style="padding: 15px; background: linear-gradient(135deg, rgba(255, 165, 0, 0.7), rgba(255, 193, 7, 0.7)); border-radius: 15px; border-left: 4px solid #8BC34A; transition: all 0.3s ease;">
+                    <strong style="color: #8BC34A; font-size: 1.1rem;">Versicolor</strong><br>
+                    <small style="color: #666;">🌿 Medium complexity</small>
+                </div>
+                <div style="padding: 15px; background: linear-gradient(135deg, rgba(255, 165, 0, 0.7), rgba(255, 193, 7, 0.7)); border-radius: 15px; border-left: 4px solid #CDDC39; transition: all 0.3s ease;">
+                    <strong style="color: #CDDC39; font-size: 1.1rem;">Virginica</strong><br>
+                    <small style="color: #666;">🌺 Most complex to classify</small>
+                </div>
+                <div style="padding: 15px; background: linear-gradient(135deg, rgba(255, 165, 0, 0.7), rgba(255, 193, 7, 0.7)); border-radius: 15px; border-left: 4px solid #FFEB3B; transition: all 0.3s ease;">
+                    <strong style="color: #FFEB3B; font-size: 1.1rem;">Accuracy</strong><br>
+                    <small style="color: #666;">🎯 ~95% confidence</small>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin: 30px 0; padding: 25px; background: linear-gradient(135deg, rgba(255, 165, 0, 0.8), rgba(255, 193, 7, 0.8)); border-radius: 20px; backdrop-filter: blur(10px);">
+            <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 1.3rem;">🌟 Garden Victory Stats</h3>
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; margin-top: 20px;">
+                <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, rgba(255, 165, 0, 0.7), rgba(255, 193, 7, 0.7)); border-radius: 15px; min-width: 120px;">
+                    <div style="font-size: 2rem; color: #4CAF50;">🎯</div>
+                    <div style="font-weight: 600; color: #4CAF50;">Accuracy</div>
+                    <div style="font-size: 0.9rem; color: #666;">95%+</div>
+                </div>
+                <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, rgba(255, 165, 0, 0.7), rgba(255, 193, 7, 0.7)); border-radius: 15px; min-width: 120px;">
+                    <div style="font-size: 2rem; color: #8BC34A;">⚡</div>
+                    <div style="font-weight: 600; color: #8BC34A;">Speed</div>
+                    <div style="font-size: 0.9rem; color: #666;">Instant</div>
+                </div>
+                <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, rgba(255, 165, 0, 0.7), rgba(255, 193, 7, 0.7)); border-radius: 15px; min-width: 120px;">
+                    <div style="font-size: 2rem; color: #CDDC39;">🛡️</div>
+                    <div style="font-weight: 600; color: #CDDC39;">Defense</div>
+                    <div style="font-size: 0.9rem; color: #666;">Strong</div>
+                </div>
+                <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, rgba(255, 165, 0, 0.7), rgba(255, 193, 7, 0.7)); border-radius: 15px; min-width: 120px;">
+                    <div style="font-size: 2rem; color: #FFEB3B;">🌸</div>
+                    <div style="font-weight: 600; color: #FFEB3B;">Flowers</div>
+                    <div style="font-size: 0.9rem; color: #666;">3 Types</div>
+                </div>
+            </div>
+        </div>
+
+        <a href="/" class="back-link">
+            🔙 Try Another Prediction
+        </a>
+    </div>
+
+    <script>
+        // Popup toggle functionality
+        function togglePopup(popupId) {
+            const popup = document.getElementById(popupId);
+            popup.classList.toggle('active');
+            
+            // Close other popups when opening a new one
+            const allPopups = document.querySelectorAll('.right-popup');
+            allPopups.forEach(p => {
+                if (p.id !== popupId) {
+                    p.classList.remove('active');
+                }
+            });
+        }
+
+        // Close popups when clicking outside
+        document.addEventListener('click', function(event) {
+            const popups = document.querySelectorAll('.right-popup');
+            const toggleButtons = document.querySelectorAll('.popup-toggle');
+            
+            if (!event.target.closest('.right-popup') && 
+                !event.target.closest('.popup-toggle')) {
+                popups.forEach(popup => {
+                    popup.classList.remove('active');
+                });
+            }
+        });
+
+        // Enhanced flower information with Plants vs Zombies theme
+        const flowerInfo = {
+            'Setosa': {
+                description: 'Iris Setosa is the most distinctive of the three species, with shorter, broader petals and a unique petal shape that makes it easily distinguishable from the other two species. Like a Sunflower in Plants vs Zombies, it\'s reliable and easy to identify!',
+                characteristics: ['🌱 Shortest petals', '🛡️ Most distinctive shape', '⚡ Easiest to identify', '❄️ Native to cold regions'],
+                color: '#4CAF50',
+                pvzComparison: 'Like a Sunflower - reliable and easy to spot!'
+            },
+            'Versicolor': {
+                description: 'Iris Versicolor, also known as the Blue Flag Iris, has medium-sized petals and is often found in wetland areas. It serves as an intermediate between Setosa and Virginica. Like a Peashooter, it\'s versatile and dependable!',
+                characteristics: ['🌿 Medium-sized petals', '⚖️ Intermediate complexity', '💧 Wetland habitat', '💙 Blue-purple flowers'],
+                color: '#8BC34A',
+                pvzComparison: 'Like a Peashooter - versatile and dependable!'
+            },
+            'Virginica': {
+                description: 'Iris Virginica, or Virginia Iris, has the longest and most complex petal structure. It is the most challenging to classify due to its similarity to Versicolor. Like a Cherry Bomb, it\'s powerful but requires careful handling!',
+                characteristics: ['🌺 Longest petals', '🧠 Most complex structure', '🎯 Hardest to classify', '🏞️ Southeastern US native'],
+                color: '#CDDC39',
+                pvzComparison: 'Like a Cherry Bomb - powerful but complex!'
+            }
+        };
+
+        // Get the predicted flower type from the Flask template variable
+        const flowerType = '{{ flower }}'; // This will get the actual flower name from Flask
+        const info = flowerInfo[flowerType];
+
+        if (info) {
+            // Update the flower information section with Plants vs Zombies theme
+            document.getElementById('flowerInfo').innerHTML = `
+                <p style="margin-bottom: 15px; font-size: 1.1rem; line-height: 1.6;">
+                    ${info.description}
+                </p>
+                
+                <div style="padding: 15px; background: linear-gradient(135deg, rgba(255, 165, 0, 0.6), rgba(255, 193, 7, 0.6)); border-radius: 15px; border-left: 4px solid ${info.color}; margin: 15px 0;">
+                    <strong style="color: ${info.color}; font-size: 1.1rem;">🎮 Plants vs Zombies Comparison:</strong><br>
+                    <span style="color: #666; font-style: italic;">${info.pvzComparison}</span>
+                </div>
+                
+                <h4 style="color: ${info.color}; margin-bottom: 15px; font-size: 1.2rem;">🌱 Key Characteristics:</h4>
+                <ul style="list-style: none; padding: 0;">
+                    ${info.characteristics.map(char => 
+                        `<li style="margin: 10px 0; padding: 12px 18px; background: linear-gradient(135deg, rgba(255, 165, 0, 0.6), rgba(255, 193, 7, 0.6)); border-radius: 12px; border-left: 4px solid ${info.color}; transition: all 0.3s ease; cursor: pointer;" 
+                             onmouseover="this.style.transform='translateX(5px) scale(1.02)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.1)'"
+                             onmouseout="this.style.transform='translateX(0) scale(1)'; this.style.boxShadow='none'">
+                            ${char}
+                        </li>`
+                    ).join('')}
+                </ul>
+            `;
+        }
+
+        // Enhanced entrance animation with Plants vs Zombies theme
+        window.addEventListener('load', function() {
+            const container = document.querySelector('.result-container');
+            container.style.animation = 'slideInUp 1s ease-out';
+            
+            // Add success pulse animation
+            setTimeout(() => {
+                container.classList.add('success-animation');
+            }, 500);
+
+            // Add Plants vs Zombies victory effect
+            setTimeout(() => {
+                playVictoryEffect();
+            }, 1000);
+        });
+
+        // Enhanced hover effects for info cards
+        const infoCards = document.querySelectorAll('[style*="background: rgba(255, 255, 255, 0.2)"]');
+        infoCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.03)';
+                this.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.25)';
+                this.style.borderColor = 'rgba(76, 175, 80, 0.5)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+                this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.1)';
+                this.style.borderColor = 'rgba(76, 175, 80, 0.2)';
+            });
+        });
+
+        // Enhanced typing effect with Plants vs Zombies theme
+        function typeWriter(element, text, speed = 120) {
+            let i = 0;
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    // Add victory sparkle effect
+                    addSparkleEffect(element);
+                }
+            }
+            
+            type();
+        }
+
+        // Add sparkle effect after typing
+        function addSparkleEffect(element) {
+            const sparkles = ['✨', '🌟', '💫', '⭐', '✨'];
+            sparkles.forEach((sparkle, index) => {
+                setTimeout(() => {
+                    const sparkleElement = document.createElement('span');
+                    sparkleElement.textContent = sparkle;
+                    sparkleElement.style.position = 'absolute';
+                    sparkleElement.style.fontSize = '1.5rem';
+                    sparkleElement.style.animation = 'bounce 0.5s ease-in-out';
+                    sparkleElement.style.left = Math.random() * 100 + '%';
+                    sparkleElement.style.top = Math.random() * 100 + '%';
+                    element.style.position = 'relative';
+                    element.appendChild(sparkleElement);
+                    
+                    setTimeout(() => {
+                        sparkleElement.remove();
+                    }, 1000);
+                }, index * 200);
+            });
+        }
+
+        // Plants vs Zombies victory effect
+        function playVictoryEffect() {
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach((particle, index) => {
+                setTimeout(() => {
+                    particle.style.transform = 'scale(2) rotate(360deg)';
+                    particle.style.opacity = '1';
+                    particle.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
+                    setTimeout(() => {
+                        particle.style.transform = 'scale(1) rotate(0deg)';
+                        particle.style.opacity = '0.7';
+                        particle.style.boxShadow = '0 0 10px rgba(76, 175, 80, 0.5)';
+                    }, 500);
+                }, index * 150);
+            });
+        }
+
+        // Apply enhanced typing effect after page load
+        setTimeout(() => {
+            const predictionElement = document.getElementById('predictionResult');
+            const originalText = predictionElement.textContent;
+            typeWriter(predictionElement, originalText, 150);
+        }, 1200);
+
+        // Add click sound effect to back link
+        document.querySelector('.back-link').addEventListener('click', function() {
+            playVictoryEffect();
+        });
+
+        // Add hover effects to popup toggle buttons
+        const toggleButtons = document.querySelectorAll('.popup-toggle');
+        toggleButtons.forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-50%) scale(1.15)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-50%) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
